@@ -52,60 +52,83 @@ def user_number_choice() -> str:
             print('Attention, you cant enter duplicate numbers')
         else:
             return user_number
-    
+        
 
-#Main game
+# bull/bulls and cow/cows
+
+def bulls_cows(user_n, secret_n) -> None:
+    '''
+    Popis:
+    Vypise se pocet bull/bulls (pokud uzivatel uhodne jak cislo, tak umisteni) 
+    prip. cows/cows (pokud uzivatel uhodne pouze cislo, ale ne jeho umisteni). 
+    Vracene hodnoceni bere ohled na jednotne a mnozne cislo ve vystupu 
+    
+    Priklad:
+    6328 -tajne cislo
+    6382 - cislo uzivatele
+    
+    Vysledek:
+    you have 2 bulls
+    you have 2 cows
+    '''
+    bulls = 0
+    cows = 0
+    
+    for i, x in zip(user_n, secret_n):
+        if x in user_n:
+            if x == i:
+                bulls +=1
+    if bulls == 1:
+        print(f'you have  {bulls} bull')
+    else:
+        print(f'you have  {bulls} bulls')
+
+    for i, x in zip(user_n, secret_n):
+        if x in user_n:
+            if x != i:
+                cows +=1
+    if cows == 1:
+                print(f'you have {cows} cown')
+    else:
+                print(f'you have {cows} cows')
+
+# Main game
 def main_game() -> None:
     '''
     Popis:
-    Porovnani cisla uzivatele s tajnym cislem. Pocet hadani je 9.
-    Porovnavaji se hodnoty - cows a hodnoty+indexy - bulls.
+    Provadi finalni hru, vypis a nastavuje pocet pokusu uzivatele na 8.
     
     Priklad:
-    5761 vs 5314
+    6328 -tajne cislo
+    6382 - cislo uzivatele
     
     Vysledek:
-    you have  1 bull
+    --- Guess: 8---
+    Enter a number: 6382
+    you have 2 bulls
     you have 2 cows 
     '''
+    
     line = '-' * 47
     print('Hi there!', line, 
         'I\'ve generated a random 4 digit number for you.',
         'Let\'s play a bulls and cows game.', line, sep='\n')
     tries = 9
     secret_number = list(creating_4_secret_number())
-    print(secret_number)
-    
+
     while tries > 1 :
-        bulls = 0
-        cows = 0
+        
         tries -= 1
         print("--- Guess: " + str(tries) + "---")
         user_number = (list(map(int,user_number_choice())))
-        #bull/bulls
-        for i in range(len(user_number)):
-            
-            if user_number[i] == secret_number[i]:
-                bulls +=1
-        if bulls == 1:
-            print(f'you have  {bulls} bull')
-        else:
-            print(f'you have  {bulls} bulls')
-        #cown/cowns
-        for i in user_number:
-            
-            if i in secret_number:
-                cows += 1        
-        if cows == 1:
-            print(f'you have {cows} cown')
-        else:
-            print(f'you have {cows} cows')
-        #user win        
+        bulls_cows(user_number,secret_number)
         if user_number  == secret_number:
             print('---YOU WIN!---')
-            quit()       
+            quit()
+        
     else:
         print(f'---you have no more attempts. You lost. GAME OVER---')
+        
 
 
 
